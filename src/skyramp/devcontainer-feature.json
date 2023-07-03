@@ -10,8 +10,8 @@
         "vscode": {
             "extensions": [
                 "skyramp.mocker-vscode",
-            ],
-        },
+            ]
+        }
     },
     "installsAfter": [
         "ghcr.io/devcontainers/features/common-utils"
