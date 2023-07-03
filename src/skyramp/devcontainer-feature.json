@@ -1,0 +1,12 @@
+{
+    "id": "skyramp",
+    "version": "1.0.0",
+    "name": "Cloud Native development environment tools",
+    "documentationURL": "https://skyramp.dev",
+    "description": "Installs skyramp cli",
+    "options": {
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}
