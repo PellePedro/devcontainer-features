@@ -1,11 +1,18 @@
 {
     "id": "skyramp",
     "version": "1.0.0",
-    "name": "Cloud Native development environment tools",
+    "name": "Skyramp Test Tools",
     "documentationURL": "https://skyramp.dev",
     "description": "Installs skyramp cli",
     "options": {
     },
+    "customizations": {
+		"vscode": {
+			"extensions": [
+				"skyramp.mocker-vscode",
+			]
+		}
+  	}
     "installsAfter": [
         "ghcr.io/devcontainers/features/common-utils"
     ]
