@@ -9,7 +9,14 @@
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
 		"ghcr.io/pellepedro/devcontainer-features/skyramp:1": {}
-	}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"skyramp.mocker-vscode",
+			]
+		}
+  	}
 }
 
 ```
