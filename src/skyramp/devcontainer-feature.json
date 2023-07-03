@@ -9,7 +9,7 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "skyramp.mocker-vscode",
+                "skyramp.mocker-vscode"
             ]
         }
     },
