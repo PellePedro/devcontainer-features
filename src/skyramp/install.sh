@@ -13,3 +13,7 @@ CI=true bash -c "$(curl -fsSL https://skyramp-public.s3.us-west-2.amazonaws.com/
 
 echo "fs.inotify.max_user_watches=${MAX_USER_WATCHES}" |  tee -a /etc/sysctl.conf
 echo "fs.inotify.max_user_instances=${MAX_USER_INSTANCES}" | tee -a /etc/sysctl.conf
+
+if ! type docker > /dev/null 2>&1; then
+    echo -e '\n(*) Warning: The docker command was not found.\n\nYou can use one of the following scripts to install it:\n\nhttps://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/docker-in-docker.md\n\nor\n\nhttps://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/docker.md'
+fi
