@@ -1,6 +1,6 @@
 {
     "id": "skyramp",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "name": "Skyramp CLI",
     "documentationURL": "https://skyramp.dev",
     "description": "Installs skyramp cli",
