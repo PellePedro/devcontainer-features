@@ -84,7 +84,29 @@ warn() {
 }
 
 
-NONINTERACTIVE=1
+# Check if script is run non-interactively (e.g. CI)
+# If it is run non-interactively we should not prompt for passwords.
+# Always use single-quoted strings with `exp` expressions
+# shellcheck disable=SC2016
+if [[ -z "${NONINTERACTIVE-}" ]]
+then
+  if [[ -n "${CI-}" ]]
+  then
+    warn 'Running in non-interactive mode because `$CI` is set.'
+    NONINTERACTIVE=1
+  elif [[ ! -t 0 ]]
+  then
+    if [[ -z "${INTERACTIVE-}" ]]
+    then
+      warn 'Running in non-interactive mode because `stdin` is not a TTY.'
+      NONINTERACTIVE=1
+    else
+      warn 'Running in interactive mode despite `stdin` not being a TTY because `$INTERACTIVE` is set.'
+    fi
+  fi
+else
+  ohai 'Running in non-interactive mode because `$NONINTERACTIVE` is set.'
+fi
 
 # Print Header and ToC Acceptance
 RED=$(tput setaf 1)
@@ -109,7 +131,16 @@ printf "\nSkyramp is the easy way for cloud native developers to test and solve 
 
 printf "This script will install Skyramp binaries on your machine.\n\n"
 
-SKYRAMP_ON_LINUX=1
+# First check OS.
+OS="$(uname)"
+SKYRAMP_ON_LINUX=""
+if [[ "${OS}" == "Linux" ]]
+then
+  SKYRAMP_ON_LINUX=1
+elif [[ "${OS}" != "Darwin" ]]
+then
+  abort "Skyramp is only supported on macOS and Linux."
+fi
 
 # Set oldest supported OS version
 MACOS_OLDEST_SUPPORTED="11.0"
@@ -377,6 +408,9 @@ skyramp_os_arch_download() {
     elif [[ "${UNAME_MACHINE}" == "amd64" ]]
     then
       skyramp_file_download "https://skyramp-public.s3.us-west-2.amazonaws.com/linux-amd64/skyramp" "${HOME}/.skyramp/skyramp"
+    elif [[ "${UNAME_MACHINE}" == "aarch64" ]]
+    then
+      skyramp_file_download "https://skyramp-public.s3.us-west-2.amazonaws.com/linux-amd64/skyramp" "${HOME}/.skyramp/skyramp"
     fi
   fi
 }
@@ -463,16 +497,6 @@ then
   if [[ "${UNAME_MACHINE}" != "arm64" ]] && [[ "${UNAME_MACHINE}" != "x86_64" ]]
   then
     abort "Skyramp is only supported on 64 bit Intel and ARM processors!"
-  fi
-else
-  # On Linux, support 64-bit Intel and AMD
-  if [[ "${UNAME_MACHINE}" != "x86_64" ]] && [[ "${UNAME_MACHINE}" != "amd64" ]]
-  then
-    abort "$(
-      cat <<EOABORT
-Skyramp on Linux is only supported on 64 bit Intel and AMD processors!
-EOABORT
-    )"
   fi
 fi
 
@@ -570,4 +594,4 @@ execute_sudo "${CHMOD}" "-R" "ugo+rw" "${HOME}/.skyramp" >/dev/null
 ohai "Installation complete!"
 execute "skyramp" "version"
 
-oi
+ohai "Visit our quick start guide at https://skyramp.dev/docs to get started!"
